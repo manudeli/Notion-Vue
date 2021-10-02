@@ -1,0 +1,12 @@
+{
+  "presets": ["@babel/preset-env"],
+  // 전역을 손상 시키지 않으면서, 바벨 내부에서 지원하는 helper들을 사용하여 코드를 변환할 수 있다.
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": 3
+      }
+    ]
+  ]
+}
