@@ -5,6 +5,7 @@ export default {
   state() {
     return {
       workspaces: [],
+      currentWorkspace: {},
     }
   },
 
@@ -24,7 +25,7 @@ export default {
       await request('/documents', {
         method: 'POST',
         body: JSON.stringify({
-          title: '제목을 입력하세요',
+          title: '',
           parent: parentId,
         }),
       })
@@ -39,9 +40,23 @@ export default {
       })
     },
 
-    readWorkSpace() {},
+    async readWorkspace({ commit }, payload) {
+      const { id } = payload
+      const workspace = await request(`/documents/${id}`, {
+        method: 'GET',
+      })
+      commit('assignState', {
+        currentWorkspace: workspace,
+      })
+    },
 
-    updateWorkspace() {},
+    async updateWorkspace({ commit }, payload) {
+      const { id, title, content } = payload
+      await request(`/documents/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ title, content }),
+      })
+    },
 
     async deleteWorkspace({ dispatch }, payload) {
       const { id } = payload

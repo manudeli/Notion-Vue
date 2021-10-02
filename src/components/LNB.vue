@@ -91,7 +91,6 @@ nav {
   }
   ul {
     flex-grow: 1;
-    border: 4px solid;
     overflow-x: hidden;
     overflow-y: auto;
   }

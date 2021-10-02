@@ -1,6 +1,17 @@
 <template>
   <li>
-    <div :style="{ paddingLeft: `${14 * depth}px` }" class="title">
+    <div
+      :style="{ paddingLeft: `${14 * depth}px` }"
+      class="title"
+      @click="
+        $router.push({
+          name: 'Workspace',
+          params: {
+            id: workspace.id,
+          },
+        })
+      "
+    >
       <span
         :class="{ active: showChildren }"
         class="material-icons"
