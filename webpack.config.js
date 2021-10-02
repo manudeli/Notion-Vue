@@ -35,7 +35,26 @@ module.exports = {
       {
         test: /\.s?css$/,
         // order는 오른쪽에서 왼쪽 읽힌다.
-        use: ['vue-style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: `
+                @use 'sass:color';
+                @use 'sass:list';
+                @use 'sass:map';
+                @use 'sass:math';
+                @use 'sass:meta';
+                @use 'sass:selector';
+                @use 'sass:string';
+                @import "@/scss/_variables";
+              `,
+            },
+          },
+        ],
       },
     ],
   },
