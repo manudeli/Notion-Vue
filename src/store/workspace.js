@@ -1,3 +1,5 @@
+import { request } from '@/util/api'
+
 export default {
   namespaced: true,
   state() {
@@ -17,22 +19,36 @@ export default {
   },
 
   actions: {
-    createWorkspace() {},
+    async createWorkspace({ dispatch }, payload = {}) {
+      const { parentId } = payload
+      await request('/documents', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: '제목을 입력하세요',
+          parent: parentId,
+        }),
+      })
+      await dispatch('readWorkspaces')
+    },
+
     async readWorkspaces({ commit }) {
-      const workspaces = await fetch('https://kdt.roto.codes/documents/', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-username': 'jonghyeon123',
-        },
-      }).then((res) => res.json())
+      const workspaces = await request('/documents', { method: 'GET' })
 
       commit('assignState', {
         workspaces,
       })
     },
+
     readWorkSpace() {},
+
     updateWorkspace() {},
-    deleteWorkspace() {},
+
+    async deleteWorkspace({ dispatch }, payload) {
+      const { id } = payload
+      await request(`/documents/${id}`, {
+        method: 'DELETE',
+      })
+      await dispatch('readWorkspaces')
+    },
   },
 }
