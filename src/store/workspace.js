@@ -7,6 +7,7 @@ export default {
     return {
       workspaces: [],
       currentWorkspace: {},
+      currentWorkspacePath: [],
     }
   },
 
@@ -45,6 +46,7 @@ export default {
       commit('assignState', {
         workspaces,
       })
+      dispatch('findWorkspacePath')
       if (!workspaces.length) {
         dispatch('createWorkspace')
       }
@@ -90,6 +92,24 @@ export default {
           },
         })
       }
+    },
+
+    findWorkspacePath({ state, commit }) {
+      const currentWorkspaceId = parseInt(
+        router.currentRoute.value.params.id,
+        10
+      )
+      function find(workspace, parents) {
+        if (currentWorkspaceId === workspace.id) {
+          commit('assignState', {
+            currentWorkspacePath: [...parents, workspace],
+          })
+        }
+        if (workspace.documents) {
+          workspace.documents.forEach((ws) => find(ws, [...parents, workspace]))
+        }
+      }
+      state.workspaces.forEach((workspace) => find(workspace, []))
     },
   },
 }

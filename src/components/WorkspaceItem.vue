@@ -16,7 +16,7 @@
       <span
         :class="{ active: showChildren }"
         class="material-icons"
-        @click="showChildren = !showChildren"
+        @click.stop="showChildren = !showChildren"
       >
         play_arrow
       </span>
@@ -24,8 +24,10 @@
         {{ workspace.title }}
       </span>
       <div class="actions">
-        <span class="material-icons" @click="createWorkspace"> add </span>
-        <span class="material-icons" @click="deleteWorkspace"> delete </span>
+        <span class="material-icons" @click.stop="createWorkspace"> add </span>
+        <span class="material-icons" @click.stop="deleteWorkspace">
+          delete
+        </span>
       </div>
     </div>
     <div
@@ -67,6 +69,11 @@ export default {
     hasChildren() {
       return this.workspace.documents && this.workspace.documents.length
     },
+  },
+  created() {
+    this.showChildren = this.$store.state.workspace.currentWorkspacePath.some(
+      (workspace) => workspace.id === this.workspace.id
+    )
   },
   methods: {
     createWorkspace() {
