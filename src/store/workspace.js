@@ -48,7 +48,7 @@ export default {
       })
       dispatch('findWorkspacePath')
       if (!workspaces.length) {
-        dispatch('createWorkspace')
+        await dispatch('createWorkspace')
       }
     },
 
